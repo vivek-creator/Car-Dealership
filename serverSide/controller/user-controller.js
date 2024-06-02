@@ -1,18 +1,10 @@
-import { createUser, loginUser } from '../model/user-schema.js'; //testing code after adding login validation
+// user-controller.js
 
-export const handleTransaction = async (request, response) => {
-    const { carsData } = request.body;
-    try {
-        const result = await paymentTransaction(carsData);
-        if (result.status === 'success') {
-            response.status(200).json({ message: result.message, data: result });
-        } else {
-            response.status(401).json({ message: result.message });
-        }
-    } catch (error) {
-        response.status(500).json({ message: error.message });
-    }
-};
+import { createUser, loginUser } from '../model/user-schema.js'; 
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Load environment variables from .env file
 
 export const addUser = async (request, response) => {
     const user = request.body;
@@ -30,19 +22,24 @@ export const addUser = async (request, response) => {
     }
 };
 
+
 export const handleLogin = async (request, response) => {
     const { email, password } = request.body;
     try {
         const result = await loginUser(email, password);
-        if (result.status === 'success') {
-            response.status(200).json({ message: result.message });
+        console.log(result);
+        if (result && result.status === 'success' && result.user) {
+            const token = jwt.sign({ email: result.user.email, userId: result.user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            response.status(200).json({ message: result.message, token: token });
         } else {
-            response.status(401).json({ message: result.message });
+            response.status(401).json({ message: 'Invalid credentials' });
         }
     } catch (error) {
         response.status(500).json({ message: error.message });
     }
 };
+
+
 
 function validateUserData(userData) {
     const { name, email, password, confirmPassword, phone } = userData;
@@ -57,6 +54,57 @@ function validateUserData(userData) {
         errors
     };
 }
+
+
+
+// import { createUser, loginUser } from '../model/user-schema.js'; okk code git 
+
+
+// export const addUser = async (request, response) => {
+//     const user = request.body;
+//     const validation = validateUserData(user);
+//     if (!validation.isValid) {
+//         response.status(400).json({ message: validation.errors.join(", ") });
+//         return;
+//     }
+    
+//     try {
+//         const userId = await createUser(user);
+//         response.status(201).json({ user: { ...user, _id: userId } });
+//     } catch (error) {
+//         response.status(409).json({ message: error.message });
+//     }
+// };
+
+    
+
+// export const handleLogin = async (request, response) => {
+//     const { email, password } = request.body;
+//     try {
+//         const result = await loginUser(email, password);
+//         if (result.status === 'success') {
+//             response.status(200).json({ message: result.message });
+//         } else {
+//             response.status(401).json({ message: result.message });
+//         }
+//     } catch (error) {
+//         response.status(500).json({ message: error.message });
+//     }
+// };
+
+// function validateUserData(userData) {
+//     const { name, email, password, confirmPassword, phone } = userData;
+//     let errors = [];
+//     if (!name) errors.push("Name is required");
+//     if (!email) errors.push("Email is required");
+//     if (password !== confirmPassword) errors.push("Passwords do not match");
+//     if (!phone) errors.push("Phone number is required");
+
+//     return {
+//         isValid: errors.length === 0,
+//         errors
+//     };
+// }
 
 // import { createUser, loginUser } from '../model/user-schema.js';//testing code after adding login validation
 

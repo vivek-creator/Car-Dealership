@@ -62,7 +62,7 @@ const carsData = [
   ];
 
 
-  const Cars = ({ handleBuy }) => {
+  const Cars = () => {
  
   return (
     <div> 

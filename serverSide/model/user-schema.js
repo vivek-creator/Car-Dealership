@@ -25,9 +25,9 @@ async function loginUser(email, password) {
   const db = await connectDB();
   const user = await db.collection('users').findOne({ email });
   if (user && await password===user.password) {
-    return { status: 'success', message: 'Login successful' };
+    return { status: 'success', message: 'Login successful', user:user};
   } else {
-    return { status: 'error', message: 'Invalid credentials' };
+    return { status: 'error', message: 'Invalid credentials'};
   }
 }
 

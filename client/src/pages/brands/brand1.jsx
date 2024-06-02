@@ -31,7 +31,7 @@ import Mercedes3 from '../../assets/Mercedes3.jpeg';
 import Mercedes4 from '../../assets/Mercedes4.jpeg';
 import Mercedes5 from '../../assets/Mercedes5.jpeg';
 
-const BrandPage = ({ handleBuy }) => {
+const BrandPage = ({handleBuy}) => {
  
   const { brandId } = useParams();
 
@@ -118,7 +118,7 @@ const BrandPage = ({ handleBuy }) => {
         <div key={car.id}>
           <img src={car.imageUrl} alt={`Car ${car.id}`} style={{ marginTop: '10px', width: '400px' , height: '200px' , display : 'flex' , color:'inherit', flexDirection : 'row'}} />
           <p>Price: {car.price}</p>
-          <button onClick={() => handleBuy(car)}>Buy</button> {/* Call handleBuy on button click */}
+          <button onClick={() => handleBuy(car)}>Buy</button>  {/* Call handleBuy on button click */}
         </div>
       ))}
       <Footer />

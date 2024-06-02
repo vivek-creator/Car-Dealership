@@ -46,38 +46,6 @@ app.post("/api/create-checkout-session", async (req, res) => {
     }
 });
 
-
-// app.post("/api/create-checkout-session", async (req, res) => {
-
-//     const { product } = req.body;
-    
-//     const lineItems = product.map(item => ({
-//         price_data: {
-//             currency: 'usd',
-//             product_data: {
-//                 name: item.id,
-//             },
-//             unit_amount: parseInt(item.price.replace(/[^0-9]/g, '')) * 100,
-//         },
-//         quantity: 1,
-//     }));
-    
-//     try {
-//         const session = await stripe.checkout.sessions.create({
-//             payment_method_types: ['card'],
-//             line_items: lineItems,
-//             mode: 'payment',
-//             success_url: 'http://localhost:3000/success',
-//             cancel_url: 'http://localhost:3000/cancel',
-//         });
-    
-//         res.json({ sessionId: session.id });
-//     } catch (error) {
-//         console.error('Stripe error:', error);
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-
 const PORT = process.env.PORT || 8080;
 
 const username = process.env.DB_USERNAME;
